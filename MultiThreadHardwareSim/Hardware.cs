@@ -9,11 +9,13 @@ namespace MultiThreadHardwareSim
     public partial class Hardware : Form
     {
         private List<string> finalResults;
+        private Object thisLock;
 
         public Hardware()
         {
             InitializeComponent();
             finalResults = new List<string>();
+            thisLock = new object();
         }
 
         private void buttonConnectDevice_Click(object sender, EventArgs e)
@@ -51,7 +53,7 @@ namespace MultiThreadHardwareSim
                 }
                 updateTextBox();
                 time.Stop();
-                MessageBox.Show(time.ElapsedMilliseconds.ToString() + "ms");
+                MessageBox.Show("Total time for programming the devices: " + time.ElapsedMilliseconds.ToString() + "ms");
 
             }
             catch (Exception ex)
@@ -133,13 +135,18 @@ namespace MultiThreadHardwareSim
                 if (status == 0)
                 {
                     statuss_result = "Successfully programmed " + deviceObj.ToString();
-                    finalResults.Add(statuss_result);
-                    //MessageBox.Show(statuss_result.ToString());
+
+                    lock (thisLock)
+                    {
+                        finalResults.Add(statuss_result);
+                    }
                 }
                 else
                 {
-                    finalResults.Add("Failure status: " + status.ToString() + ". Device: " + deviceObj.ToString());
-                    //throw new Exception("Failure status: " + status.ToString() + ". Device: " + deviceObj.ToString());
+                    lock (thisLock)
+                    {
+                        finalResults.Add("Failure status: " + status.ToString() + ". Device: " + deviceObj.ToString());
+                    }
                 }
             }
             catch (Exception ex)
