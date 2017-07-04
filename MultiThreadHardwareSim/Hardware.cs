@@ -78,7 +78,7 @@ namespace MultiThreadHardwareSim
            
         }
 
-        private void CheckDeviceConnection<T>(T deviceChoiceEnum)
+        private void CheckDeviceConnection(object deviceChoiceEnum)
         {
             try
             {
@@ -93,7 +93,7 @@ namespace MultiThreadHardwareSim
 
         }
 
-        private void ProgramDevice<T>(T deviceChoiceEnum)
+        private void ProgramDevice(object deviceChoiceEnum)
         {
             try
             {
